@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site com Fundo de Vídeo</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+       body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            color: #333;
+            font-family: 'Roboto', sans-serif;
+        }
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        #background-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 1;
+        }
+        h1 {
+            font-size: 3em;
+            margin-bottom: 0.5em;
+            color: hsl(9, 10%, 86%); /* Azul brilhante */
+            transition: color 0.5s ease;
+        }
+        p {
+            font-size: 1.5em;
+            color: #dad6d2; /* Azul brilhante */
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        .btn-custom {
+            font-size: 1.2em;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            color: #fff;
+            background: linear-gradient(45deg, #6b6b6b, #999999);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .btn-custom::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, transparent 70%);
+            transition: all 0.3s ease;
+            transform: translateX(-50%) translateY(-50%) rotate(45deg);
+            opacity: 0;
+            cursor: url("Webp.net-resizeimage.png"),auto;
+        }
+        .btn-custom:hover {
+            box-shadow: 0 0 20px rgba(255, 255, 255, 1);
+        }
+        .btn-custom:hover::before {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-50%) rotate(0deg);
+        }
+        .confetti-effect, .sad-face-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+        .confetti, .sad-face {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ff0;
+            opacity: 0.8;
+            border-radius: 50%;
+            animation: fall 5s linear infinite; /* Alterado de 3s para 5s */
+        }
+        .sad-face {
+            width: 30px;
+            height: 30px;
+            background-image: url('https://cdn-icons-png.flaticon.com/512/742/742774.png'); /* URL de uma carinha triste */
+            background-size: cover;
+            background-position: center;
+        }
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <audio id="yes-audio" src="Harry Potter - Música Tema ( Edwiges' Theme) (mp3cut.net).mp3" preload="auto"></audio>
+     <audio id="no-audio" src="click-sound.mp3.mp3" preload="auto"></audio>
+
+
+    <div class="video-background">
+        <video autoplay muted loop id="background-video">
+            <source src="Animação Mapa do Maroto - Spoilers Escondidos do Ep3.mp4" type="video/mp4">
+            Seu navegador não suporta o vídeo.
+        </video>
+    </div>
+    <div class="content">
+        <h1 id="question">Quer maratonar Harry Potter comigo?</h1>
+        <p>Que tal se tornar parte das memórias mais felizes para o meu patrono?</p>
+        <div class="buttons">
+            <button class="btn btn-custom" onclick="igniteConfetti()">Sim</button>
+            <button class="btn btn-custom" onclick="igniteSadFaces()">Não</button>
+        </div>
+    </div>
+    <div id="confetti-effect" class="confetti-effect"></div>
+    <div id="sad-face-effect" class="sad-face-effect"></div>
+    <audio id="yes-audio" src="musica-para-sim.mp3" preload="auto"></audio>
+    <audio id="no-audio" src="musica-para-nao.mp3" preload="auto"></audio>
+    <audio autoplay loop id="background-audio">
+        <source src="Harry Potter - Música Tema ( Edwiges' Theme).mp3" type="audio/mpeg">
+        Seu navegador não suporta o elemento de áudio.
+    </audio>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        let yesAudio = document.getElementById('yes-audio');
+        let noAudio = document.getElementById('no-audio');
+
+        function igniteConfetti() {
+            const confettiEffect = document.getElementById('confetti-effect');
+
+            // Pausar a música do botão "Não" e tocar a música do botão "Sim"
+            noAudio.pause();
+            yesAudio.play();
+
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.backgroundColor = getRandomColor();
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.top = `${Math.random() * -100}vh`;
+                confettiEffect.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 5000); // Alterado de 3000 para 5000
+            }
+        }
+
+        function igniteSadFaces() {
+            const sadFaceEffect = document.getElementById('sad-face-effect');
+
+            // Pausar a música do botão "Sim" e tocar a música do botão "Não"
+            yesAudio.pause();
+            noAudio.play();
+
+            for (let i = 0; i < 50; i++) {
+                const sadFace = document.createElement('div');
+                sadFace.className = 'sad-face';
+                sadFace.style.left = `${Math.random() * 100}vw`;
+                sadFace.style.top = `${Math.random() * -100}vh`;
+                sadFaceEffect.appendChild(sadFace);
+                setTimeout(() => sadFace.remove(), 5000); // Alterado de 3000 para 5000
+            }
+        }
+
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+    </script>
+</body>
+</html>
